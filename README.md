@@ -70,11 +70,23 @@ Edita el archivo `application.properties` ubicado en `src/main/resources/` con t
 
 ```properties
 # Ejemplo para MySQL
-spring.datasource.url=jdbc:mysql://localhost:3306/gestion_turnos_db
+spring.datasource.url=jdbc:mysql://localhost:3306/gestionTurno?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
 spring.datasource.username=tu_usuario
 spring.datasource.password=tu_password
 spring.jpa.hibernate.ddl-auto=update
+security.jwt.private.key=${PRIVATE_KEY}
+security.jwt.user.generator=${USER_GENERATOR}
 ```
+## Configuración JWT
+
+Para que la aplicación funcione, necesitas definir las siguientes variables de entorno:
+
+```bash
+export PRIVATE_KEY="tu_clave_privada_aqui"
+export USER_GENERATOR="com.gestionTurno.security.JwtUserGenerator"
+```
+
+-----
 
 ### 4\. Ejecutar la Aplicación
 
@@ -99,9 +111,21 @@ Utiliza esta interfaz para probar todos los *endpoints*, **incluyendo la autenti
 
 -----
 
-## 👨‍💻 Autor
+## 🔑 Autenticación y uso del Token JWT
 
-| Nombre | Rol | Contacto |
-| :--- | :--- | :--- |
-| **Hugo Orlando Benitez** | Desarrollador Backend | https://www.linkedin.com/in/hugo-benitez-hob36/ |
+1. En **Swagger UI** entra a `POST /auth/login` y envía:
+
+```json
+{
+  "username": "admin",
+  "password": "admin123"
+}
+```
+
+-----
+
+
+| Nombre                   | Rol                   | Contacto                                                                                                                                 |
+| :----------------------- | :-------------------- | :--------------------------------------------------------------------------------------------------------------------------------------- |
+| **Hugo Orlando Benitez** | Desarrollador Backend | [<img src="https://cdn-icons-png.flaticon.com/24/174/174857.png" width="16"/> LinkedIn](https://www.linkedin.com/in/hugo-benitez-hob36/) |
 
