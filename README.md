@@ -102,17 +102,17 @@ Utiliza esta interfaz para probar todos los *endpoints*, **incluyendo la autenti
 ## 🔑 Autenticación y uso del Token JWT
 
 1. En **Swagger UI** entra a `POST /auth/login` y envía:
+
 ```json
 {
   "username": "admin",
   "password": "admin123"
 }
 
------
 
-## 👨‍💻 Autor
 
-| Nombre | Rol | Contacto |
-| :--- | :--- | :--- |
-| **Hugo Orlando Benitez** | Desarrollador Backend | https://www.linkedin.com/in/hugo-benitez-hob36/ |
+| Nombre                   | Rol                   | Contacto                                                    |
+| :----------------------- | :-------------------- | :---------------------------------------------------------- |
+| **Hugo Orlando Benitez** | Desarrollador Backend | [LinkedIn](https://www.linkedin.com/in/hugo-benitez-hob36/) |
+
 
