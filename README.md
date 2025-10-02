@@ -75,7 +75,7 @@ spring.datasource.username=tu_usuario
 spring.datasource.password=tu_password
 spring.jpa.hibernate.ddl-auto=update
 security.jwt.private.key=${PRIVATE_KEY}
-security.jwt.user.generator=&{USER_GENERATOR}
+security.jwt.user.generator=${USER_GENERATOR}
 ```
 ## Configuración JWT
 
