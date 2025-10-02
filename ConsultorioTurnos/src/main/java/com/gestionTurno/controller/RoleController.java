@@ -1,20 +1,20 @@
 package com.gestionTurno.controller;
 
 import com.gestionTurno.dto.*;
-import com.gestionTurno.mapper.RoleMapper;
 import com.gestionTurno.model.Permission;
-import com.gestionTurno.model.Role;
 import com.gestionTurno.service.IPermissionService;
 import com.gestionTurno.service.IRoleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
@@ -24,6 +24,8 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api/role")
+@PreAuthorize("denyAll")
+@SecurityRequirement(name = "bearerAuth")
 @Tag(name = "Roles", description = "Operaciones relacionadas con la gestión de roles y permisos.")
 public class RoleController {
 
@@ -37,6 +39,7 @@ public class RoleController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Lista de roles obtenida correctamente.")
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<RoleResponseDTO>> getRoles() {
 
@@ -49,6 +52,7 @@ public class RoleController {
             @ApiResponse(responseCode = "200", description = "Rol encontrado."),
             @ApiResponse(responseCode = "404", description = "No se encontró un rol con el ID indicado.")
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<RoleResponseDTO> getRole(@PathVariable Long id) {
 
@@ -62,6 +66,7 @@ public class RoleController {
             @ApiResponse(responseCode = "201", description = "Rol creado correctamente."),
             @ApiResponse(responseCode = "409", description = "El rol ya existe o hay permisos duplicados.")
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<?> createRole(@RequestBody @Valid RoleDTO roleDTO) {
 
@@ -87,6 +92,7 @@ public class RoleController {
             @ApiResponse(responseCode = "204", description = "Rol eliminado correctamente."),
             @ApiResponse(responseCode = "404", description = "No se encontró un rol con el ID indicado.")
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteRoleById(@PathVariable Long id) {
 
@@ -104,6 +110,7 @@ public class RoleController {
             @ApiResponse(responseCode = "404", description = "No se encontró un rol con el ID indicado"),
             @ApiResponse(responseCode = "409", description = "El nombre del rol ya está en uso.")
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<?> updateRole(@PathVariable Long id, @RequestBody @Valid RoleDTO roleDTO) {
 

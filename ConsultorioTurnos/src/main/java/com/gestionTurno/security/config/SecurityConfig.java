@@ -2,6 +2,8 @@ package com.gestionTurno.security.config;
 
 import com.gestionTurno.security.config.filter.JwtTokenValidator;
 import com.gestionTurno.utils.JwtUtil;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,6 +25,12 @@ import org.springframework.stereotype.Component;
 @Component
 @EnableMethodSecurity
 @EnableWebSecurity
+@SecurityScheme(
+        name = "bearerAuth",
+        type = SecuritySchemeType.HTTP,
+        scheme = "bearer",
+        bearerFormat = "JWT"
+)
 public class SecurityConfig {
 
     @Autowired
@@ -34,6 +42,11 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/auth/login").permitAll()
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                        .anyRequest().authenticated()
+                )
                 .addFilterBefore(new JwtTokenValidator(jwtUtil), BasicAuthenticationFilter.class)
                 .build();
     }

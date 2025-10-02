@@ -7,12 +7,14 @@ import com.gestionTurno.service.IPermissionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +22,8 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/permission")
+@PreAuthorize("denyAll")
+@SecurityRequirement(name = "bearerAuth")
 @Tag(name = "Permisos", description = "Operaciones relacionadas con la gestión de permisos de usuario.")
 public class PermissionController {
 
@@ -30,6 +34,7 @@ public class PermissionController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Lista de permisos obtenida correctamente.")
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<PermissionResponseDTO>> getPermissions() {
         List<PermissionResponseDTO> permissionList = permissionService.findAll();
@@ -42,6 +47,7 @@ public class PermissionController {
             @ApiResponse(responseCode = "200", description = "Permiso encontrado."),
             @ApiResponse(responseCode = "404", description = "No se encontró un permiso con el ID indicado.")
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<?> getPermission(@PathVariable Long id) {
         Optional<PermissionResponseDTO> permissionFound = permissionService.findByid(id);
@@ -55,6 +61,7 @@ public class PermissionController {
             @ApiResponse(responseCode = "201", description = "Permiso creado exitosamente."),
             @ApiResponse(responseCode = "409", description = "El permiso ya existe en la base de datos.")
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<?> createPermission(@RequestBody @Valid PermissionDTO permissionDTO) {
 
@@ -74,6 +81,7 @@ public class PermissionController {
             @ApiResponse(responseCode = "204", description = "Permiso eliminado correctamente."),
             @ApiResponse(responseCode = "404", description = "No se encontró un permiso con el ID indicado.")
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePermission(@PathVariable Long id) {
 
@@ -91,6 +99,7 @@ public class PermissionController {
             @ApiResponse(responseCode = "404", description = "No se encontró un permiso con el ID indicado."),
             @ApiResponse(responseCode = "409", description = "El nombre del permiso ya está en uso.")
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<?> updatePermission(@PathVariable Long id, @RequestBody @Valid PermissionDTO permissionDTO) {
 
