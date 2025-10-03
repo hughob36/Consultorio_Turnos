@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  consultorio_turnos_app:
+    build: ConsultorioTurnos
+    mem_limit: 512m
+    ports:
+      - "8080:8080"
+    environment:
+      BD_URL: jdbc:mysql://consultorio_turnos:3306/gestionTurno?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      BD_USER: root
+      BD_PASSWORD: root
+      PRIVATE_KEY: 3d099515c7c2e3e6f88fe0881d6233b4687a65c506415460cc90bb0adbcc1e2e
+      USER_GENERATOR: HUGOBEN 	
+    restart: always
+    depends_on:
+      consultorio_turnos:
+          condition: service_healthy
+  consultorio_turnos:
+    image: mysql:8.0.33 
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_PASSWORD: root
+      MYSQL_DATABASE: gestionTurno
+    restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 10
