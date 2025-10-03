@@ -127,5 +127,5 @@ Utiliza esta interfaz para probar todos los *endpoints*, **incluyendo la autenti
 
 | Nombre                   | Rol                   | Contacto                                                                                                                                 |
 | :----------------------- | :-------------------- | :--------------------------------------------------------------------------------------------------------------------------------------- |
-| **Hugo Orlando Benitez** | Desarrollador Backend | [<img src="https://cdn-icons-png.flaticon.com/24/174/174857.png" width="16"/> LinkedIn](https://www.linkedin.com/in/hugo-benitez-hob36/) |
+| **Hugo Orlando Benitez** | Desarrollador Backend | [<img src="https://cdn-icons-png.flaticon.com/24/174/174857.png" width="16"/> LinkedIn](https://www.linkedin.com/in/hugo-benitez-hob36) |
 
