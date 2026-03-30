@@ -1,0 +1,6 @@
+projectKey=consultorioApi
+serverUrl=http://localhost:9000
+serverVersion=26.1.0.118079
+dashboardUrl=http://localhost:9000/dashboard?id=consultorioApi
+ceTaskId=89c472d6-8c7a-45e8-b011-9cf52d821013
+ceTaskUrl=http://localhost:9000/api/ce/task?id=89c472d6-8c7a-45e8-b011-9cf52d821013

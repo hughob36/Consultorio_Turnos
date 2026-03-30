@@ -28,6 +28,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api/user")
+@CrossOrigin(origins = "*")
 @PreAuthorize("denyAll")
 @SecurityRequirement(name = "bearerAuth")
 @Tag(name = "Usuarios", description = "Operaciones relacionadas con la gestión de usuarios.")
