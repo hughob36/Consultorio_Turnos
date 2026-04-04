@@ -22,6 +22,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/specialist")
+@CrossOrigin(origins = "*")
 @PreAuthorize("denyAll")
 @SecurityRequirement(name = "bearerAuth")
 @Tag(name = "Especialistas", description = "Operaciones relacionadas con la gestión de especialistas.")
