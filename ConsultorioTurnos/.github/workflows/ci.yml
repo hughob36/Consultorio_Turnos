@@ -19,8 +19,10 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '21'
-          cache: 'maven' # Esto acelera futuras ejecuciones guardando las dependencias
+          cache: 'maven'
 
-      - name: Compilar y empaquetar (sin tests)
+      - name: Compilar y empaquetar
+        # Entramos a la subcarpeta donde realmente está el proyecto
         run: mvn -B clean package -DskipTests
+        working-directory: ./Consultorio_Turnos
 
