@@ -13,7 +13,7 @@ jobs:
     # Esto le dice a TODO el trabajo que se ejecute dentro de esa carpeta
     defaults:
       run:
-        working-directory: ./ConsultorioTurnos
+        working-directory: ./Consultorio_Turnos/ConsultorioTurnos
 
     steps:
       - name: Checkout del código
