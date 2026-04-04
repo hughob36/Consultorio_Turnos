@@ -10,6 +10,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    # Esto le dice a TODO el trabajo que se ejecute dentro de esa carpeta
+    defaults:
+      run:
+        working-directory: ./ConsultorioTurnos
+
     steps:
       - name: Checkout del código
         uses: actions/checkout@v4
@@ -22,6 +27,4 @@ jobs:
           cache: 'maven'
 
       - name: Compilar y empaquetar
-        # Usamos el nombre exacto de la carpeta que aparece en tu captura
         run: mvn -B clean package -DskipTests
-        working-directory: ./ConsultorioTurnos
