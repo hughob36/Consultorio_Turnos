@@ -23,7 +23,7 @@ public class AppointmentResponseDTO {
     private Long id;
     private LocalDate date;
     private LocalTime time;
-    private AppointmentStatus appointmentStatus = AppointmentStatus.SCHEDULED;
+    private AppointmentStatus appointmentStatus;
     private UserApp user;
     private Specialist specialist;
 

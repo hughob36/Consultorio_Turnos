@@ -23,6 +23,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/appointment")
+@CrossOrigin(origins = "*")
 @PreAuthorize("denyAll")
 @SecurityRequirement(name = "bearerAuth")
 @Tag(name = "Turnos", description = "Operaciones relacionadas con la gestión de turnos.")
