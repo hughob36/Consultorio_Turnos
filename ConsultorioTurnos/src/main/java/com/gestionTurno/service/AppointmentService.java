@@ -38,9 +38,9 @@ public class AppointmentService implements IAppointmentService {
     }
 
     @Override
-    public Optional<AppointmentResponseDTO> findById(Long id) {
-        Optional<Appointment> appointment = appointmentRepository.findById(id);
-        return appointmentMapper.mapToResponseDTO(appointment);
+    public List<AppointmentResponseDTO> findById(Long id) {
+        List<Appointment> appointment = appointmentRepository.findByUserId(id);
+        return appointmentMapper.mapToResponseDTOList(appointment);
     }
 
     @Override
@@ -49,6 +49,26 @@ public class AppointmentService implements IAppointmentService {
 
         Specialist specialist = specialistRepository.findById(appointment.getSpecialist().getId()).orElse(null);
         UserApp user = userAppRepository.findById(appointment.getUser().getId()).orElse(null);
+
+        List<Appointment> appointmentList = appointmentRepository.findAll();
+
+        boolean userHasConflict = appointmentList.stream()
+                .anyMatch(a -> a.getUser().getId().equals(user.getId()) &&
+                        a.getDate().equals(appointmentDTO.getDate()) &&
+                        a.getTime().equals(appointmentDTO.getTime()));
+
+        if (userHasConflict) {
+            return null;
+        }
+
+        boolean specialistHasConflict = appointmentList.stream()
+                .anyMatch(a -> a.getSpecialist().getId().equals(specialist.getId()) &&
+                        a.getDate().equals(appointmentDTO.getDate()) &&
+                        a.getTime().equals(appointmentDTO.getTime()));
+
+        if (specialistHasConflict) {
+            return null;
+        }
 
         appointment.setSpecialist(specialist);
         appointment.setUser(user);

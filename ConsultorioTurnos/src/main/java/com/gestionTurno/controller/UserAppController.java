@@ -61,7 +61,7 @@ public class UserAppController {
             @ApiResponse(responseCode = "404", description = "No se encontró un usuario con el ID indicado.")
     })
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public ResponseEntity<UserResponseDTO> getUser(@PathVariable Long id) {
 
         Optional<UserResponseDTO> userResponseDTO = userAppService.findById(id);
@@ -76,7 +76,7 @@ public class UserAppController {
             @ApiResponse(responseCode = "409", description = "El usuario ya existe.")
     })
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("permitAll()")
     public ResponseEntity<?> createUser(@RequestBody @Valid UserDTO userDTO) {
 
         UserApp userApp = userAppMapper.toEntity(userDTO);
@@ -106,7 +106,7 @@ public class UserAppController {
             @ApiResponse(responseCode = "404", description = "No se encontró un usuario con el ID indicado.")
     })
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public ResponseEntity<?> deleteUserById(@PathVariable Long id) {
 
         if(userAppService.deleteById(id)) {
@@ -123,7 +123,7 @@ public class UserAppController {
             @ApiResponse(responseCode = "409", description = "El nombre de usuario ya está en uso.")
     })
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody @Valid UserDTO userDTO) {
 
         UserApp userApp = userAppMapper.toEntity(userDTO);

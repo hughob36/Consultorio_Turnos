@@ -19,7 +19,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/appointment")
@@ -43,19 +42,15 @@ public class AppointmentController {
         return ResponseEntity.ok(appointmentList);
     }
 
-    @Operation(summary = "Listar un turno", description = "Devuelve un turno registrado.")
+    @Operation(summary = "Lista de turnos", description = "Devuelve los turnos registrado.")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Turno encontrado."),
-            @ApiResponse(responseCode = "404", description = "No se encontró el turno con el ID indicado.")
+            @ApiResponse(responseCode = "200", description = "Turnos encontrados.")
     })
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
-    public ResponseEntity<AppointmentResponseDTO> getAppointment(@PathVariable Long id) {
-
-        Optional<AppointmentResponseDTO> appointmentFound = appointmentService.findById(id);
-        return appointmentFound
-                    .map(ResponseEntity::ok)
-                    .orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<List<AppointmentResponseDTO>> getAppointment(@PathVariable Long id) {
+        List<AppointmentResponseDTO> appointmentFound = appointmentService.findById(id);
+        return ResponseEntity.ok(appointmentFound);
     }
 
     @Operation(summary = "Crear un turno", description = "Crea un nuevo turno para un especialista.")
@@ -82,7 +77,7 @@ public class AppointmentController {
             @ApiResponse(responseCode = "404", description = "No se encontró el turno con el ID indicado.")
     })
     @PatchMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public ResponseEntity<?> updateAppointmentStatusById(@PathVariable Long id,
                                                          @RequestBody AppointmentStatus status) {
         AppointmentResponseDTO appointmentNewStatus = appointmentService.updateAppointmentById(id, status);

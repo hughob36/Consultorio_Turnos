@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface IAppointmentService {
 
     public List<AppointmentResponseDTO> findAll();
-    public Optional<AppointmentResponseDTO> findById(Long id);
+    public List<AppointmentResponseDTO> findById(Long id);
     public AppointmentResponseDTO save(AppointmentDTO appointmentDTO);
     public AppointmentResponseDTO updateAppointmentById(Long id, AppointmentStatus status);
     public AppointmentDTO updateAppointment(Long id, AppointmentDTO appointmentDTO);

@@ -6,9 +6,13 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
+import com.gestionTurno.model.UserApp;
+import com.gestionTurno.repository.IUserAppRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -25,12 +29,22 @@ public class JwtUtil {
     @Value("${security.jwt.user.generator}")
     private String userGenerator;
 
+    @Autowired
+    private IUserAppRepository userAppRepository;
 
     public String createToken(Authentication authentication) {
 
         Algorithm algorithm = Algorithm.HMAC256(privateKey);
 
-        String userName = authentication.getPrincipal().toString();
+        //String userName = authentication.getPrincipal().toString();
+        // Extraer el username del principal (ahora es un objeto UserDetails)
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        String userName = userDetails.getUsername();
+
+        // Buscamos el ID en la DB usando el nombre de usuario
+        Long userId = userAppRepository.findEntityUserByUserName(userName)
+                .map(UserApp::getId)
+                .orElse(0L);
 
         String authorities = authentication.getAuthorities()
                 .stream()
@@ -41,6 +55,7 @@ public class JwtUtil {
                 .withIssuer(this.userGenerator)
                 .withSubject(userName)
                 .withClaim("authorities",authorities)
+                .withClaim("userId",userId)
                 .withIssuedAt(new Date())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 1800000))
                 .withJWTId(UUID.randomUUID().toString())
