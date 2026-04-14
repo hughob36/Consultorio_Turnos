@@ -27,7 +27,11 @@ public class UserAppService implements IUserAppService{
 
     @Override
     public Optional<UserResponseDTO> findById(Long id) {
-        return userAppMapper.toUserOptional(userAppRepository.findById(id));
+        Optional<UserApp> userApp = userAppRepository.findById(id);
+        if(userApp != null) {
+            return userAppMapper.toUserOptional(userApp);
+        }
+        return null;
     }
 
     @Override

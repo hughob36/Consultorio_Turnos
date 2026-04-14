@@ -19,6 +19,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/appointment")
@@ -51,6 +52,20 @@ public class AppointmentController {
     public ResponseEntity<List<AppointmentResponseDTO>> getAppointment(@PathVariable Long id) {
         List<AppointmentResponseDTO> appointmentFound = appointmentService.findById(id);
         return ResponseEntity.ok(appointmentFound);
+    }
+
+    @Operation(summary = "Un turno", description = "Devuelve turno registrado.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Turno encontrado."),
+            @ApiResponse(responseCode = "404", description = "No se encontró el turno con el ID indicado.")
+    })
+    @GetMapping("/id/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<AppointmentResponseDTO> getOneAppointment(@PathVariable Long id) {
+        Optional<AppointmentResponseDTO> appointmentFound = appointmentService.findByOneId(id);
+
+        return appointmentFound.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @Operation(summary = "Crear un turno", description = "Crea un nuevo turno para un especialista.")
