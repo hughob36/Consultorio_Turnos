@@ -60,21 +60,21 @@ public class AppointmentService implements IAppointmentService {
         Specialist specialist = specialistRepository.findById(appointment.getSpecialist().getId()).orElse(null);
         UserApp user = userAppRepository.findById(appointment.getUser().getId()).orElse(null);
 
-        List<Appointment> appointmentList = appointmentRepository.findAll();
+        if(specialist == null || user == null) return null;
 
-        boolean userHasConflict = appointmentList.stream()
-                .anyMatch(a -> a.getUser().getId().equals(user.getId()) &&
-                        a.getDate().equals(appointmentDTO.getDate()) &&
-                        a.getTime().equals(appointmentDTO.getTime()));
+        boolean userHasConflict = appointmentRepository.existsByUserIdAndDateAndTimeAndAppointmentStatus(
+                    user.getId(),
+                    appointmentDTO.getDate(),
+                    appointmentDTO.getTime(),
+                    AppointmentStatus.SCHEDULED);
 
-        boolean specialistHasConflict = appointmentList.stream()
-                .anyMatch(a -> a.getSpecialist().getId().equals(specialist.getId()) &&
-                        a.getDate().equals(appointmentDTO.getDate()) &&
-                        a.getTime().equals(appointmentDTO.getTime()));
+        boolean specialistHasConflict = appointmentRepository.existsBySpecialistIdAndDateAndTimeAndAppointmentStatus(
+                specialist.getId(),
+                appointmentDTO.getDate(),
+                appointmentDTO.getTime(),
+                AppointmentStatus.SCHEDULED);
 
-        if (userHasConflict || specialistHasConflict) {
-            return null;
-        }
+        if (userHasConflict || specialistHasConflict) return null;
 
         appointment.setSpecialist(specialist);
         appointment.setUser(user);
@@ -101,17 +101,19 @@ public class AppointmentService implements IAppointmentService {
         Specialist specialist = specialistRepository.findById(appointmentDTO.getSpecialist().getId()).orElse(null);
         UserApp user = userAppRepository.findById(appointmentDTO.getUser().getId()).orElse(null);
 
-        List<Appointment> appointmentList = appointmentRepository.findAll();
+        if(specialist == null || user == null) return null;
 
-        boolean userHasConflict = appointmentList.stream()
-                .anyMatch(a -> a.getUser().getId().equals(user.getId()) &&
-                        a.getDate().equals(appointmentDTO.getDate()) &&
-                        a.getTime().equals(appointmentDTO.getTime()));
+        boolean userHasConflict = appointmentRepository.existsByUserIdAndDateAndTimeAndAppointmentStatus(
+                user.getId(),
+                appointmentDTO.getDate(),
+                appointmentDTO.getTime(),
+                AppointmentStatus.CANCELED);
 
-        boolean specialistHasConflict = appointmentList.stream()
-                .anyMatch(a -> a.getSpecialist().getId().equals(specialist.getId()) &&
-                        a.getDate().equals(appointmentDTO.getDate()) &&
-                        a.getTime().equals(appointmentDTO.getTime()));
+        boolean specialistHasConflict = appointmentRepository.existsBySpecialistIdAndDateAndTimeAndAppointmentStatus(
+                specialist.getId(),
+                appointmentDTO.getDate(),
+                appointmentDTO.getTime(),
+                AppointmentStatus.CANCELED);
 
         Appointment appointment = appointmentMapper.mapTo(appointmentDTO);
 
