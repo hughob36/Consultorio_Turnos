@@ -43,7 +43,7 @@ public class AppointmentController {
         return ResponseEntity.ok(appointmentList);
     }
 
-    @Operation(summary = "Lista de turnos", description = "Devuelve los turnos registrado.")
+    @Operation(summary = "Lista de turnos por medio del id. usuario", description = "Devuelve los turnos registrado de un usuario.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Turnos encontrados.")
     })
@@ -54,7 +54,7 @@ public class AppointmentController {
         return ResponseEntity.ok(appointmentFound);
     }
 
-    @Operation(summary = "Un turno", description = "Devuelve turno registrado.")
+    @Operation(summary = "Un turno por id del turno", description = "Devuelve un turno registrado.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Turno encontrado."),
             @ApiResponse(responseCode = "404", description = "No se encontró el turno con el ID indicado.")
